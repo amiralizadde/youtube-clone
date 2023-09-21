@@ -1,0 +1,119 @@
+::-webkit-scrollbar {
+    width: 3px; 
+  }
+  ::-webkit-scrollbar-thumb {
+      background-color: #888;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #212121;
+  }
+#sidebar{
+    position: fixed;
+    width: inherit;
+    /* height: 100vh; */
+    left: 0;
+    bottom: 0;
+    top: 5rem;
+    overflow-y: hidden;
+    background-color: black;
+}
+#sidebar:hover{
+    overflow-y: auto;
+}
+#sidebar .sidebar__content{
+    transition: all 0.5s ease;
+    
+}
+.sidebar-content__list{
+    width: 100%;
+    transition: all 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#sidebar .sidebar__content span{
+    color: white;
+}
+.sidebar-content__list-item{
+    padding: 5px 2px;
+    border-radius: 5px;
+    transition: all 0.5s ease;
+    width: 100%;
+}
+.sidebar-content__list-item:hover{
+    background-color: #313131;
+    cursor: pointer;
+}
+.sidebar-content__icon{
+    font-size: 25px !important;
+}
+.sidebar-content__list-item-text{
+    font-size: 14px;
+    margin:0.5rem 3rem
+}
+.sidebar-subscriptions__image{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.sidebar__title {
+    color: #aaaaaa;
+    text-align: start;
+    margin: 1rem ;
+  }
+  #sidebar .accordion-body-items-content{
+    background-color: black !important;
+
+  }
+  .accordion-header{
+    border: unset !important;
+    color: white !important;
+  }
+  .accordion-button{
+    background-color: black !important;
+    border: unset !important;
+    color: white !important;
+    font-size: 15px !important;
+  }
+  .accordion-button:focus{
+    box-shadow: unset !important;
+    background-color: #888 !important;
+  }
+  .accordion-button:hover{
+    background-color: #888 !important;
+  }
+  .accordion-button::after{
+    color: white !important;
+  }
+  .accordion-button:not(.collapsed){
+    box-shadow: unset !important;
+  }
+  .accordion-item {
+    border: unset !important;
+  }
+
+  .sidebar-active{
+    background-color:#313131 !important;
+  }
+
+  @media screen and (max-width:576px){
+    
+    .sidebar-content__list-item-text{
+      margin:0.5rem 0.5rem;
+      font-size: 10px;
+  }
+
+  }
+
+@keyframes sidebar-animation{
+
+    0%{
+
+    }
+    100%{
+
+    }
+
+}

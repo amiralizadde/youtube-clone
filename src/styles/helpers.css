@@ -1,0 +1,14 @@
+.video-title{
+    font-size: 13px;
+    font-weight: bold;
+    /* text-align: justify; */
+    color: white;
+}
+
+.video-information{
+    font-size: 12px;
+    color: #c4c4c4;
+}
+.inactive{
+    display: none !important;
+}

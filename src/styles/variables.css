@@ -1,0 +1,8 @@
+@import './fonts.css';
+:root{
+    --orginal-font: 'Roboto', sans-serif;
+    --orginal-color:#5f6e1e;
+    --white-color:#fff;
+    --dark-color:#464749;
+    --aside-widht:auto;
+}

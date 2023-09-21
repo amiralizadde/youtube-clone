@@ -1,0 +1,61 @@
+.videoBox__content{
+    direction: ltr;
+}
+.videoBox__content:hover{
+    cursor: pointer;
+}
+.videoBox__content:hover .videoBox__image{
+
+    border-radius: 0;
+    transition: all 0.3s ease ;
+
+}
+.videoBox__image{
+    width: 100%;
+    height: 185px;
+    object-fit: none;
+    border-radius: 10px;
+}
+.videoBox__duration{
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    background-color: black;
+    color: white;
+    padding: 2px 5px;
+}
+.videoBox__content-image-channel{
+    width: 40px;
+    height: 40px;
+}
+.videoBox__content-information{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0rem 2rem 1rem 0rem;
+}
+.videoBox__image-channel{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+.videoBox__information{
+    padding: 0 0.5rem 0 2rem;
+    font-size: 15px;
+    line-height:1.7rem;
+}
+.videoBox__information-title{
+    font-size: 13px;
+    text-align: justify;
+}
+.videoBox__information-publish{
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+}
+.videoBox__information-name-channel,
+.videoBox__information-views,
+.videoBox__information-timeUpload{
+    font-size: 12px;
+    color: #c4c4c4;
+}

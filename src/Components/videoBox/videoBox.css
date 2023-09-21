@@ -1,0 +1,56 @@
+.video-box__content{
+    direction: ltr;
+}
+.video-box__content:hover{
+    cursor: pointer;
+}
+.video-box__content:hover .video-box__poster-image{
+
+    border-radius: 0;
+    transition: all 0.3s ease ;
+
+}
+.video-box__poster-image{
+    width: 100%;
+    height: 185px;
+    object-fit: none;
+    border-radius: 10px;
+}
+.video-box__duration{
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    background-color: black;
+    color: white;
+    padding: 2px 5px;
+}
+.video-box__infos-img-channel{
+    width: 40px;
+    height: 40px;
+}
+.video-box__infos{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0rem 2rem 1rem 0rem;
+}
+.video-box__infos-img{
+    border-radius: 50%;
+}
+
+.video-box__infos-texts{
+    padding: 0 0.5rem 0 2rem;
+    font-size: 15px;
+    line-height:1.7rem;
+}
+.video-box__infos-texts-title{
+    font-size: 13px;
+    text-align: justify;
+}
+.video-box__infos-texts-name,
+.video-box__infos-texts-views,
+.video-box__infos-texts-timeUpload{
+    font-size: 12px;
+    color: #c4c4c4;
+}
+

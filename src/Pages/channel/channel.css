@@ -1,0 +1,110 @@
+.channel-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+}
+.channel-header__top-bar{
+ width: 100%;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ direction: rtl;
+}
+.channel-header__topbar-image-container{
+  width: 100%;
+}
+.channel-header__topbar-image{
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+.chanchannel-header__name{
+  color: white;
+  font-size: 25px;
+}
+.chanchannel-header__number-subscribe{
+  color: #c4c4c4;
+}
+
+.channel-header__nav-bar {
+  width: 90%;
+}
+.channel-header__nav-bar-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  direction: ltr;
+}
+.channel-header__nav-bar-list-item {
+  text-align: center;
+}
+
+.channel-header__topbar-infoChannel-left{
+  display: flex;
+  align-items: center;
+  justify-content:center ;
+  direction: ltr;
+}
+
+.channel-header__topbar-infoChannel{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90% ;
+}
+
+.chanchannel-header__topbar-infoChannel-profile{
+  width: 100px;
+  height: 100px;
+}
+.chanchannel-header__topbar-infoChannel-profile-image{
+  border-radius: 50%;
+}
+.channel-header__topbar-infoChannel-btn{
+  background-color: #CC0000 ;
+  color: white ;
+  padding: 10px 20px ;
+  font-size: 14px ;
+  font-weight: bold;
+  border-radius: 3px;
+  border: none;
+}
+.channel-header__nav-bar-link{
+  color: #c4c4c4;
+  font-size: 12px;
+}
+.channel-header__nav-bar-link:hover{
+  color: #c4c4c4 !important;
+}
+
+.active{
+  color: white;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after{
+  font-size: 20px !important;
+}
+
+@media screen and (max-width:567px) {
+
+  .chanchannel-header__name{
+    font-size: 15px;
+  }
+  .chanchannel-header__number-subscribe{
+    font-size: 12px;
+  }
+  .chanchannel-header__topbar-infoChannel-profile{
+    width: 50px;
+    height:50px;
+  }
+  .channel-header__topbar-infoChannel-btn{
+    padding: 5px 5px ;
+    font-size: 10px ;
+  }
+  .channel-header__topbar-infoChannel-left{
+  flex-direction: column;
+  }
+}

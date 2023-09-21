@@ -1,0 +1,31 @@
+.video-suggestion__content{
+  height: 100%;
+  width: 100%;
+}
+.video-suggestion__image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: transparent !important;
+}
+
+.video-suggestion__information-content{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    /* height: 80%; */
+}
+.video-suggestion__content{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+@media screen and (max-width:567px) {
+  .video-suggestion__image{
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+ }
+}
+

@@ -1,0 +1,10 @@
+.searchVideo__image{
+    width: 100%;
+     height:275px;
+    object-fit: cover;
+}
+.channel-image{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}

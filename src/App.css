@@ -1,0 +1,31 @@
+@import './styles/variables.css';
+@import './styles/helpers.css';
+.home-content{
+  background-color: black !important ;
+  height: auto;
+  width: 100%;
+  overflow-x: hidden;
+
+  /* direction: rtl; */
+}
+.sidebar{
+  top: 5rem !important;
+}
+.aside-content{
+  position: relative;
+  transition: all 0.2s ease;
+  height: auto;
+}
+.router-content{
+  transition: all 0.2s ease;
+}
+
+
+
+@media screen and (max-width:991px){
+  
+  .router-content{
+    width: calc(100% - 80px);
+  }
+
+}

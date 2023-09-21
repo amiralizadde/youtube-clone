@@ -1,0 +1,47 @@
+#channelInfo .channel-header__topbar-infoChannel {
+    direction: rtl;
+}
+.channel-header__topbar-infoChannel-left{
+    display: flex;
+    align-items: center;
+    justify-content:center ;
+    direction: ltr;
+  }
+  
+  .channel-header__topbar-infoChannel{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90% ;
+  }
+  
+  .chanchannel-header__topbar-infoChannel-profile{
+    width: 100px;
+    height: 100px;
+  }
+  .chanchannel-header__topbar-infoChannel-profile-image{
+    border-radius: 50%;
+  }
+  .channel-header__topbar-infoChannel-btn{
+    background-color: #CC0000 ;
+    color: white ;
+    padding: 10px 20px ;
+    font-size: 14px ;
+    font-weight: bold;
+    border-radius: 3px;
+    border: none;
+  }
+
+  @media screen and (max-width:567px) {
+    .chanchannel-header__topbar-infoChannel-profile{
+        width: 50px;
+        height:50px;
+      }
+      .channel-header__topbar-infoChannel-btn{
+        padding: 5px 5px ;
+        font-size: 10px ;
+      }
+      .channel-header__topbar-infoChannel-left{
+      flex-direction: column;
+      }
+  }
