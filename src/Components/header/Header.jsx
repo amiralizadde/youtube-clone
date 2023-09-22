@@ -30,14 +30,17 @@ export default function Header() {
     context.setCollapsed(!context.collapsed);
   };
 
-  const login = async (event) => {
-    event.preventDefault();
-    const clientId =
-      "424691366405-fgkp2u99f96rf4cbv4pcui0ml0u5kng7.apps.googleusercontent.com";
-    const redirectUri = "http://localhost:5173"; // باید ادرس فایل رو آدرس پروژه خود وارد کنید
-    const scope = "https://www.googleapis.com/auth/youtube";
-    await (window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}&scope=${scope}&include_granted_scopes=true`);
-  };
+
+  useEffect(()=>{
+    google.accounts.id.initialize({
+      clint_id:"424691366405-fgkp2u99f96rf4cbv4pcui0ml0u5kng7.apps.googleusercontent.com",
+      callback:()=>{
+        console.log('logged in ... Response' );
+      }
+    });
+
+    google.accounts.id.renderButton(document.querySelector('.sign_in'))
+  },[])
 
   const searchingItem = async (searchItem) => {
     searchValue &&
@@ -184,31 +187,15 @@ export default function Header() {
                   className="header-right__profile-img"
                 />
               ) : (
-                <LoginSocialGoogle
-                  isOnlyGetToken
-                  client_id={
-                    "424691366405-fgkp2u99f96rf4cbv4pcui0ml0u5kng7.apps.googleusercontent.com"
-                  }
-                  onLoginStart={(event) => login(event)}
-                  onResolve={({ data }) => {
-                    console.log("success data", data);
-                    let token = data.access_token;
-                    localStorage.setItem(
-                      "token",
-                      JSON.stringify({ token: data.access_token })
-                    ),
-                      context.setIsLogin(true);
-                  }}
-                  onReject={(err) => {
-                    console.log("err", err);
-                  }}
+                <div
+                  className="sign_in"
                 >
                   <img
                     src="../../../public/images/logo/download.png"
                     className="header-right__profile-img"
                     alt=""
                   />
-                </LoginSocialGoogle>
+                </div>
               )}
             </div>
           </div>
