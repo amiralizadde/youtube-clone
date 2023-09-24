@@ -40,6 +40,7 @@ export default function VideoPlay() {
   const [comments, setComments] = useState([]);
   const [nextPageToken, setNextPageToken] = useState(null);
   const [hasMore, setHasMore] = useState(false);
+  const [isUpdateComments , setIsUpdateComments] = useState(false)
 
   let context = useContext(ChannelDetailsContext);
 
@@ -62,6 +63,7 @@ export default function VideoPlay() {
   }, [params]);
 
   useEffect(() => {
+    console.log('update');
     let comment = commentsVideo(params.videoID);
     comment.then((res) => {
       if (res.status === 200) {
@@ -143,7 +145,7 @@ export default function VideoPlay() {
         requestBody,
         {
           params: {
-            part: "snippet", // کلید API شما
+            part: "snippet" 
           },
           headers: {
             Authorization: `Bearer ${token.token}`,
@@ -151,8 +153,12 @@ export default function VideoPlay() {
         }
       )
       .then((res) => {
-        console.log("res insert comment ", res);
-      });
+        if (res.status === 200) {
+          setIsUpdateComments(true)
+        }
+      }).catch(err=>{
+        console.log('err',err);
+      })
   };
 
   const form = useFormik({
@@ -284,7 +290,6 @@ export default function VideoPlay() {
                       </>
                     ) : (
                       <>
-                        {console.log(dataVideo[0].snippet.description)}
                         {dataVideo[0].snippet.description}
                       </>
                     )}
@@ -365,6 +370,7 @@ export default function VideoPlay() {
               >
                 {comments.length > 0
                   ? comments.map((comment) => (
+                       console.log('update comment'),
                       <Comments key={comment.id} comment={comment} />
                     ))
                   : ""}

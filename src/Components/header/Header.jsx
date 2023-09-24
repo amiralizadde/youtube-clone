@@ -1,13 +1,11 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { GoogleLoginButton } from "react-social-login-buttons";
 import { api_key } from "../utils/utils.jsx";
-import { useLocation, Link, useParams, useNavigate } from "react-router-dom";
-import queryString from "query-string";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import { Button, Modal } from "react-bootstrap";
 import { ChannelDetailsContext } from "../../contexts/ChannelDetailsContext.jsx";
-import { LoginSocialGoogle } from "reactjs-social-login";
-import jwtDecode from "jwt-decode";
+import {GoogleOAuthProvider } from '@react-oauth/google';
+import Login from "../login/Login.jsx";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -24,23 +22,13 @@ export default function Header() {
   const [searchValue, setSearchValue] = useState("");
   const [searchResult, setSearchResult] = useState("");
   const [videoSearchResult, setVideoSearchResult] = useState(null);
+  const [tokenLogin , setTokenLogin] = useState('')
   let context = useContext(ChannelDetailsContext);
+  let clientID = "563530907251-hmcv32krv4fovjsrcqaiml4v2s8f0v2m.apps.googleusercontent.com"
 
   const menuCollaps = () => {
     context.setCollapsed(!context.collapsed);
   };
-
-
-  useEffect(()=>{
-    google.accounts.id.initialize({
-      clint_id:"424691366405-fgkp2u99f96rf4cbv4pcui0ml0u5kng7.apps.googleusercontent.com",
-      callback:()=>{
-        console.log('logged in ... Response' );
-      }
-    });
-
-    google.accounts.id.renderButton(document.querySelector('.sign_in'))
-  },[])
 
   const searchingItem = async (searchItem) => {
     searchValue &&
@@ -71,17 +59,20 @@ export default function Header() {
   };
 
   useEffect(() => {
-    let token = JSON.parse(localStorage.getItem("token"));
+    let tokenL = JSON.parse(localStorage.getItem("token"));
 
-    console.log(token);
+    console.log('token' , tokenL);
 
-    if (token) {
+    if (tokenL) {
       axios
         .get(`https://www.googleapis.com/youtube/v3/channels`, {
           params: {
             part: "snippet",
             mine: true,
-            access_token: token.token,
+            access_token:tokenL.token
+          },
+          headers: {
+            Authorization: `Bearer ${tokenL.token}`,
           },
         })
         .then((res) => {
@@ -89,7 +80,9 @@ export default function Header() {
             context.setMyData(res.data.items);
             context.setIsLogin(true);
           }
-        });
+        }).catch(err=>{
+          console.log('err',err.response);
+        })
     }
   }, [context.isLogin]);
 
@@ -187,15 +180,15 @@ export default function Header() {
                   className="header-right__profile-img"
                 />
               ) : (
-                <div
-                  className="sign_in"
-                >
-                  <img
-                    src="../../../public/images/logo/download.png"
-                    className="header-right__profile-img"
-                    alt=""
-                  />
-                </div>
+                <>
+                   <GoogleOAuthProvider 
+                     clientId="563530907251-hmcv32krv4fovjsrcqaiml4v2s8f0v2m.apps.googleusercontent.com"
+                    >
+                    <Login />
+                   </GoogleOAuthProvider>
+                  
+                 
+                    </>
               )}
             </div>
           </div>
