@@ -1,3 +1,6 @@
+.channel{
+  margin-top: 5.5rem;
+}
 .channel-header {
   display: flex;
   flex-direction: column;

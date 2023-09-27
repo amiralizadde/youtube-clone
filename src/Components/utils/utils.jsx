@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const api_key = "AIzaSyBGEC_jendiZ32psap-l7lSpDlt6h5n1OM";
+export const api_key = "AIzaSyArC9q2NAHgRsSbOqpqmTSy8T_UfFVU0Nk";
 
 const channelInfos = (channelID) => {
   const res = axios.get("https://www.googleapis.com/youtube/v3/channels", {
@@ -154,13 +154,13 @@ const convertTime = time=>{
 }
 
 export {
-  channelInfos,
+  channelInfos,  //
   setTimeAndView,
-  videosChannels,
-  videosInformation,
-  getVideos,
-  getSuggestionVideos,
-  commentsVideo,
+  videosChannels,//
+  videosInformation,//
+  getVideos,//
+  getSuggestionVideos,//
+  commentsVideo,//
   convertNumber,
   convertTime
 };

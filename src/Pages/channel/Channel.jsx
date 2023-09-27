@@ -1,32 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./channel.css";
-import { channelInfos , convertNumber } from "../../Components/utils/utils.jsx";
-import { useParams, Outlet, Link, NavLink } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/free-mode";
-import 'swiper/css/navigation';
-import { FreeMode, Pagination , Navigation } from "swiper/modules";
+import {  convertNumber } from "../../Components/utils/utils.jsx";
+import { useParams } from "react-router-dom";
 import Index from "./index/Index.jsx";
+import { channelInformation } from "../../services/Axios/requests/Channels.jsx";
 
 export default function Channel() {
   let params = useParams();
   const [channelDetails, setChannelDetails] = useState("");
   const [subscribeCount , setSubScribeCount] = useState(0)
 
-  useEffect(() => {
-    console.log("channelDetails ", channelDetails);
-  }, [channelDetails]);
+
 
   useEffect(() => {
-    console.log(" params :", params.channelID);
-    let channelInfo = channelInfos(params.channelID);
-    channelInfo.then((res) => {
-      if (res.status === 200) {
-        console.log('res channelInfo' , res.data);
-        setChannelDetails(res.data);
-        setSubScribeCount(convertNumber(res.data.items[0].statistics.subscriberCount))
-      }
+    channelInformation(params.channelID)
+    .then((res) =>{
+        setChannelDetails(res);
+        setSubScribeCount(convertNumber(res.items[0].statistics.subscriberCount))
     });
   }, []);
 
@@ -70,58 +60,10 @@ export default function Channel() {
                 </div>
               </div>
             </div>
-
-            {/* <div className="channel-header__nav-bar border ">
-              <Swiper
-                slidesPerView={3}
-                breakpoints={{
-                  640: {
-                    slidesPerView: 4,
-                  },
-                  768: {
-                    slidesPerView: 5,
-                  },
-                  991:{
-                    slidesPerView:7,
-                  }
-                }}
-                navigation={true} modules={[Navigation , FreeMode]}
-                className="mySwiper channel-header__nav-bar-list text-white my-3 "
-              >
-                <SwiperSlide className="channel-header__nav-bar-list-item">
-                  <NavLink to="" end className="channel-header__nav-bar-link">HOME</NavLink>
-                </SwiperSlide>
-
-                <SwiperSlide className="channel-header__nav-bar-list-item">
-                  <NavLink to="videos" className="channel-header__nav-bar-link">  VIDEOS</NavLink>
-                </SwiperSlide>
-
-                <SwiperSlide className="channel-header__nav-bar-list-item">
-                  <NavLink to="playlists"className="channel-header__nav-bar-link">PLAYLISTS</NavLink>
-                </SwiperSlide>
-
-                <SwiperSlide className="channel-header__nav-bar-list-item">
-                  <NavLink to="community"className="channel-header__nav-bar-link">COMMUNITY</NavLink>
-                </SwiperSlide>
-
-                <SwiperSlide className="channel-header__nav-bar-list-item">
-                  <NavLink to="channels" className="channel-header__nav-bar-link">CHANNELS</NavLink>
-                </SwiperSlide>
-
-                <SwiperSlide className="channel-header__nav-bar-list-item">
-                  <NavLink to="about" className="channel-header__nav-bar-link"> ABOUT</NavLink>
-                </SwiperSlide>
-                
-                <SwiperSlide className="channel-header__nav-bar-list-item">
-                  SEARCH
-                </SwiperSlide>
-              </Swiper>
-            </div> */}
           </header>
 
           <section className="channel-content">
             <div className="container-fluid">
-              {/* <Outlet /> */}
               <Index />
             </div>
           </section>

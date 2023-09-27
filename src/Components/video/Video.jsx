@@ -3,6 +3,7 @@ import './Video.css'
 import {channelInfos ,convertTime , convertNumber} from '../utils/utils.jsx'
 import { useNavigate } from 'react-router-dom';
 import  moment  from 'moment';
+import { channelInformation } from '../../services/Axios/requests/Channels.jsx';
 
 export default function Video({video , page}) {
     let navigate = useNavigate();
@@ -13,9 +14,10 @@ export default function Video({video , page}) {
    
 
     useEffect(()=>{
-        // console.log('timeVideo ' , video.contentDetails.duration);
         let duration
         let timeOfVideo =  moment.duration(video.contentDetails.duration);
+        let time = convertTime(video.snippet.publishedAt)
+        let view = convertNumber(video.statistics.viewCount)
        
         if (timeOfVideo.asHours() >= 1) {
             duration = moment.utc(timeOfVideo.asMilliseconds()).format('hh:mm:ss')
@@ -23,19 +25,11 @@ export default function Video({video , page}) {
             duration = moment.utc(timeOfVideo.asMilliseconds()).format('mm:ss')
         }
         setTimeVideo(duration)
-
-        let time = convertTime(video.snippet.publishedAt)
-        let view = convertNumber(video.statistics.viewCount)
-        
         setTimePassed(time)
         setViewVideo(view)
 
-        let channelInfo = channelInfos(video.snippet.channelId)
-        channelInfo.then(res=>{
-            if (res.status === 200) {
-                setChannelData(res.data.items)
-            }
-        })
+        channelInformation(video.snippet.channelId)
+        .then(res=>setChannelData(res.items))
     },[])
 
   return (

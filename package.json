@@ -37,6 +37,7 @@
     "react-social-login-buttons": "^3.9.1",
     "react-youtube": "^10.1.0",
     "reactjs-social-login": "^2.6.2",
+    "sweetalert": "^2.1.2",
     "swiper": "^10.0.4"
   },
   "devDependencies": {

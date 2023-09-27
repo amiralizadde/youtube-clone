@@ -5,16 +5,13 @@ import { useParams } from "react-router-dom";
 import Video from "../../Components/video/Video.jsx";
 import axios from "axios";
 import { useFormik } from "formik";
+import { convertNumber, convertTime } from "../../Components/utils/utils.jsx";
 import {
-  api_key,
-  setTimeAndView,
-  getSuggestionVideos,
   videosInformation,
-  channelInfos,
-  commentsVideo,
-  convertNumber,
-  convertTime,
-} from "../../Components/utils/utils.jsx";
+  getVideoSuggestions,
+  videoComments,
+} from "../../services/Axios/requests/HomeVideo.jsx";
+import { channelInformation } from "../../services/Axios/requests/Channels.jsx";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Comments from "../../Components/comments/comments";
 import ChannelInformation from "../../Components/channelInformation/ChannelInformation.jsx";
@@ -40,7 +37,7 @@ export default function VideoPlay() {
   const [comments, setComments] = useState([]);
   const [nextPageToken, setNextPageToken] = useState(null);
   const [hasMore, setHasMore] = useState(false);
-  const [isUpdateComments , setIsUpdateComments] = useState(false)
+  const [isUpdateComments, setIsUpdateComments] = useState(false);
 
   let context = useContext(ChannelDetailsContext);
 
@@ -48,46 +45,43 @@ export default function VideoPlay() {
   let insertCommentBtn = useRef();
   let cancelInsertCommentBtn = useRef();
 
+  // recive video
   useEffect(() => {
-    let videoInfo = videosInformation(params.videoID);
-    console.log("params.videoID", params.videoID);
-    videoInfo.then((res) => {
-      if (res.status === 200) {
-        console.log("res videoInfo", res.data);
-        setDataVideo(res.data.items);
-        setNumberComment(
-          convertNumber(res.data.items[0].statistics.commentCount)
-        );
-      }
+    console.log("videoInformation1");
+    videosInformation(params.videoID).then((res) => {
+      setDataVideo(res.items);
+      setNumberComment(convertNumber(res.items[0].statistics.commentCount));
     });
   }, [params]);
 
+  // recive video comments
   useEffect(() => {
-    console.log('update');
-    let comment = commentsVideo(params.videoID);
-    comment.then((res) => {
-      if (res.status === 200) {
-        setNextPageToken(res.data.nextPageToken);
-        setComments(res.data.items);
-      }
+    console.log("videoComments");
+    videoComments(params.videoID).then((res) => {
+      setNextPageToken(res.nextPageToken);
+      setComments(res.items);
     });
   }, [params]);
 
+  // recive channel information and video date and time
   useEffect(() => {
-    let channelInfo;
-
-    dataVideo.length &&
+    dataVideo.length > 0 &&
+      (console.log("chanelinformation"),
       (setViewVideo(convertNumber(dataVideo[0].statistics.viewCount)),
       setTimePassed(convertTime(dataVideo[0].snippet.publishedAt)),
-      (channelInfo = channelInfos(dataVideo[0].snippet.channelId)),
-      channelInfo.then((res) => {
-        if (res.status === 200) {
-          setDataChannel(res.data);
-        }
-      }));
+      channelInformation(dataVideo[0].snippet.channelId)
+        .then((res) => setDataChannel(res))
+        .catch((err) =>
+          swal({
+            text: err,
+            icon: "warning",
+            dangerMode: true,
+          })
+        )));
   }, [dataVideo]);
 
   useEffect(() => {
+    console.log("videoSuggestion2");
     let videosSuggestionInfo = [...videoSuggestions];
 
     videosSuggestionInfo = videosSuggestionInfo.map((videoSuggestion) => {
@@ -96,23 +90,27 @@ export default function VideoPlay() {
     Promise.all(videosSuggestionInfo).then((data) => {
       let newVideoSuggestion = [];
       data.map((item) => {
-        item.status === 200 && newVideoSuggestion.push(item.data.items[0]);
+        newVideoSuggestion.push(item.items[0]);
       });
       setVideoAllSuggestions(newVideoSuggestion);
     });
   }, [videoSuggestions]);
 
+  // recive video suggestion
   useEffect(() => {
-    let suggestion;
     dataVideo.length &&
-      (console.log("dataVideo 114", dataVideo[0].snippet.title),
-      (suggestion = getSuggestionVideos(dataVideo[0].snippet.title)),
-      suggestion.then((res) => {
-        if (res.status === 200) {
-          console.log("res suggestion video ", res.data.items);
-          setVideoSuggestions(res.data.items);
-        }
-      }));
+      (console.log("videoSuggestion1"),
+      getVideoSuggestions(dataVideo[0].snippet.title)
+        .then((res) => {
+          setVideoSuggestions(res.items);
+        })
+        .catch((err) =>
+          swal({
+            text: err,
+            icon: "warning",
+            dangerMode: true,
+          })
+        ));
   }, [dataVideo]);
 
   const opts = {
@@ -123,11 +121,10 @@ export default function VideoPlay() {
     },
   };
 
+  // start use formik
   const insertCommentFunction = async (values) => {
     let token = JSON.parse(localStorage.getItem("token"));
-    const apiKey = api_key; // جایگزین YOUR_API_KEY با کلید API کپی کرده شده خود شوید
 
-    const url = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&key=${apiKey}`;
     const requestBody = {
       snippet: {
         videoId: params.videoID,
@@ -138,27 +135,23 @@ export default function VideoPlay() {
         },
       },
     };
-    console.log("requestBody", requestBody);
-    await axios
-      .post(
-        "https://www.googleapis.com/youtube/v3/commentThreads",
-        requestBody,
-        {
-          params: {
-            part: "snippet" 
-          },
-          headers: {
-            Authorization: `Bearer ${token.token}`,
-          },
-        }
-      )
-      .then((res) => {
-        if (res.status === 200) {
-          setIsUpdateComments(true)
-        }
-      }).catch(err=>{
-        console.log('err',err);
+    axios
+      .post("/commentThreads", requestBody, {
+        params: {
+          part: "snippet",
+        },
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+        },
       })
+      .then((res) => setIsUpdateComments(true))
+      .catch((err) =>
+        swal({
+          text: err,
+          icon: "warning",
+          dangerMode: true,
+        })
+      );
   };
 
   const form = useFormik({
@@ -183,6 +176,7 @@ export default function VideoPlay() {
       return errors;
     },
   });
+
   const insertCommentFucus = () => {
     insertCommentBtn.current.classList.remove("inactive");
     cancelInsertCommentBtn.current.classList.remove("inactive");
@@ -192,14 +186,11 @@ export default function VideoPlay() {
     insertCommentBtn.current.classList.add("inactive");
   };
 
+  // load more comments
   const fetchMoreData = () => {
-    let comment = commentsVideo(params.videoID, nextPageToken);
-    comment.then((res) => {
-      console.log("res", res);
-      if (res.status === 200) {
-        setNextPageToken(res.data.nextPageToken);
-        setComments((prevState) => [...prevState, ...res.data.items]);
-      }
+    videoComments(params.videoID, nextPageToken).then((res) => {
+      setNextPageToken(res.nextPageToken);
+      setComments((prevState) => [...prevState, ...res.items]);
     });
   };
 
@@ -246,7 +237,7 @@ export default function VideoPlay() {
         </div>
         <div className=" text-white videoPlay__content-suggestion">
           <div className="row row-cols-1">
-            {videoAllSuggestions.length &&
+            {videoAllSuggestions.length > 0 &&
               videoAllSuggestions
                 .slice(0, 4)
                 .map((videoSuggestion) => (
@@ -265,7 +256,6 @@ export default function VideoPlay() {
               <pre className="videoPlay__description ">
                 {showMore ? (
                   <>
-                  {console.log(dataVideo[0].snippet.description)}
                     {dataVideo[0].snippet.description}
                     <br />
                     <button
@@ -289,9 +279,7 @@ export default function VideoPlay() {
                         </button>
                       </>
                     ) : (
-                      <>
-                        {dataVideo[0].snippet.description}
-                      </>
+                      <>{dataVideo[0].snippet.description}</>
                     )}
                   </>
                 )}
@@ -370,22 +358,21 @@ export default function VideoPlay() {
               >
                 {comments.length > 0
                   ? comments.map((comment) => (
-                       console.log('update comment'),
                       <Comments key={comment.id} comment={comment} />
                     ))
                   : ""}
-                  {
-                    comments.length > 10 ? (
-                         <>
-                            <button className="btn p-3 px-5 fs-4 ms-5  text-secondary showMore_btn" onClick={fetchMoreData}>
-                              show more
-                            </button>
-                         </>
-                    ) : (
-                      ""
-                    )
-                  }
-           
+                {comments.length > 10 ? (
+                  <>
+                    <button
+                      className="btn p-3 px-5 fs-4 ms-5  text-secondary showMore_btn"
+                      onClick={fetchMoreData}
+                    >
+                      show more
+                    </button>
+                  </>
+                ) : (
+                  ""
+                )}
               </InfiniteScroll>
             </div>
           </div>
