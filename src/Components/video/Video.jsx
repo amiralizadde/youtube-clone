@@ -34,12 +34,12 @@ export default function Video({video , page}) {
 
   return (
     channelData.length ? (
-    <div className={`col mt-4 videoBox__content ${page === "videoPlay" ? "px-5":""}`}>
-        <div className='videoBox__content-image position-relative'>
+    <div className={`col mt-4 videoBox__content  ${page === "videoPlay" ? "px-5":""}`}>
+        <div className={`videoBox__content-image position-relative  ${ page === "videoPlay" ? 'videoPlay-image-box' : ''}`}>
             <img  src={`${video.snippet.thumbnails.high.url}`} alt="" className='videoBox__image'onClick={()=> navigate(`/video/${video.id}`)}/>
-                <span className="videoBox__duration">{timeVideo}</span>
+            <span className="videoBox__duration">{timeVideo}</span>
         </div>
-        <div className='videoBox__content-information' onClick={()=> navigate(`/channel/${video.snippet.channelId}`)}>
+        <div className='videoBox__content-information ' onClick={()=> navigate(`/channel/${video.snippet.channelId}`)}>
             <div className={` ${page === "channel" || page === "videoPlay" ? 'inactive' : 'videoBox__content-image-channel'}`}>
                 <img src={`${channelData[0].snippet.thumbnails.high.url}`} alt="" className='videoBox__image-channel'/>
             </div>

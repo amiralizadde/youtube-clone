@@ -234,22 +234,7 @@ export default function VideoPlay() {
               </span>
             </div>
           </div>
-        </div>
-        <div className=" text-white videoPlay__content-suggestion">
-          <div className="row row-cols-1">
-            {videoAllSuggestions.length > 0 &&
-              videoAllSuggestions
-                .slice(0, 4)
-                .map((videoSuggestion) => (
-                  <Video
-                    key={videoSuggestion.id}
-                    video={videoSuggestion}
-                    page="videoPlay"
-                  />
-                ))}
-          </div>
-        </div>
-        <div className="videoPlay__content-description">
+          <div className="">
           {dataChannel && (
             <>
               <ChannelInformation dataChannel={dataChannel} />
@@ -286,6 +271,23 @@ export default function VideoPlay() {
               </pre>
             </>
           )}
+          </div>
+        </div>
+        <div className=" text-white videoPlay__content-suggestion">
+          <div className="row row-cols-1">
+            {videoAllSuggestions.length > 0 &&
+              videoAllSuggestions
+                .slice(0, 4)
+                .map((videoSuggestion) => (
+                  <Video
+                    key={videoSuggestion.id}
+                    video={videoSuggestion}
+                    page="videoPlay"
+                  />
+                ))}
+          </div>
+        </div>
+        <div className="videoPlay__content-description">
           <hr className="text-secondary" />
           <div className="videoPlay__comments">
             <div className="videoPlay__comments-insert">
