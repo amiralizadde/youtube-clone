@@ -30,9 +30,9 @@ a {
   transition: all 400ms ease;
 }
 
-a:hover {
+/* a:hover {
   color: #1e83f0;
-}
+} */
 
 /* i{
   user-select: none;

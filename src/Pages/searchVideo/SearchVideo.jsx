@@ -4,34 +4,38 @@ import VideoSearchBox from '../../Components/videoSearch/VideoSearchBox.jsx';
 import InfiniteScroll from 'react-infinite-scroll-component'
 import {getSuggestionVideos} from '../../Components/utils/utils.jsx'
 import {useParams} from 'react-router-dom'
+import { getVideoSuggestions } from '../../services/Axios/requests/HomeVideo.jsx';
 
 export default function SearchVideo() {
 
   let context = useContext(ChannelDetailsContext)
   let params = useParams()
   const [hasMore, setHasMore] = useState(true);
+  const [newParms  , setNewParmas] = useState('')
   const [nextPageToken , setNextPageToken] = useState(context.videoSearchResult.nextPageToken)
-  const [searchResults , setSearchResults] = useState(context.videoSearchResult.items) 
+  const [searchResults , setSearchResults] = useState(context.videoSearchResult) 
+
+
 
   useEffect(()=>{
-    console.log('searchResults' , searchResults);
-  },[])
+    console.log('changed');
+   setSearchResults(context.videoSearchResult)
+  },[context.videoSearchResult])
+
 
   
   const fetchMoreData = () => {
-    let videos = getSuggestionVideos(params.searchValue,nextPageToken)
-    videos.then((res) => {
-      if (res.status === 200) {
-        setNextPageToken(res.data.nextPageToken)
-        setSearchResults(prevState=>[...prevState , ...res.data.items]);
-      }
+    getVideoSuggestions(params.searchValue,nextPageToken)
+    .then((res) => {
+        setNextPageToken(res.nextPageToken)
+        setSearchResults(prevState=>[...prevState , ...res.items]);
     });
   };
 
   return (
     <>
     {searchResults &&
-    <div className="container-fluid">
+    <div className="container-fluid mt-5" >
         <InfiniteScroll
             dataLength={searchResults.length}
             next={fetchMoreData}
@@ -40,7 +44,6 @@ export default function SearchVideo() {
             className=""
           >
       {searchResults.map(video=>(
-        // console.log('video' , video)
         <VideoSearchBox key={video.id.videoId} video={video}/>
       ))}
       </InfiniteScroll>

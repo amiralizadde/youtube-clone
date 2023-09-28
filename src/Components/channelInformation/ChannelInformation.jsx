@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./channelInformation.css";
-import { channelInfos, convertNumber } from "../utils/utils.jsx";
+import { convertNumber } from "../utils/utils.jsx";
 
 export default function ChannelInformation({ dataChannel }) {
-  const [channelData, setChanelData] = useState("");
   const [subScribeCount, setSubScribeCount] = useState("");
 
   useEffect(() => {
-    console.log('dataChannel :' , dataChannel);
     setSubScribeCount(
       convertNumber(dataChannel.items[0].statistics.subscriberCount)
     );

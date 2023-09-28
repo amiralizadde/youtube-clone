@@ -147,10 +147,18 @@
     .header__center{
         display: none;
     }
+    .header-center__search-icon{
+        top:1rem;
+        right:16rem;
+    }
+    .header-searchBox{
+        display: none !important;
+    }
     
 }
 
 /* _________Start modal style_________ */
+
 .Modal-search-box{
     position: relative;
 }

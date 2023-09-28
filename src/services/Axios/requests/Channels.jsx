@@ -21,4 +21,32 @@ const channelVideos = (channelID) =>{
 
 }
 
-export {channelInformation , channelVideos}
+const getMyChannel = (token) =>{
+console.log('token' , token);
+    return apiRequests("/channels", {
+       params: {
+            part: "snippet",
+            mine: true,
+            access_token:token
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+      });
+
+}
+
+const channelSubScribes = (token) => {
+
+    return apiRequests("/subscriptions", {
+        params: {
+            part: "snippet",
+            mine: true,
+            maxResults: 15,
+            access_token:token,
+          },
+       });
+
+}
+
+export { channelInformation , channelVideos , getMyChannel , channelSubScribes }

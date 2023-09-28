@@ -20,8 +20,12 @@ export default function Login() {
 
   return (
     
-     <button onClick={signIn}>
-       Sign in with Google
+     <button onClick={signIn} className='btn'>
+          <img
+                  src="../../../public/images/logo/download.png"
+                  alt=""
+                  className="header-right__profile-img"
+           />
      </button>
   )
 }

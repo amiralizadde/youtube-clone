@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { api_key } from "../utils/utils.jsx";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import { Button, Modal } from "react-bootstrap";
 import { ChannelDetailsContext } from "../../contexts/ChannelDetailsContext.jsx";
-import {GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "../login/Login.jsx";
+import { videoSearch } from "../../services/Axios/requests/Search.jsx";
+import { getMyChannel } from "../../services/Axios/requests/Channels.jsx";
+import swal from "sweetalert";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -17,78 +19,68 @@ import axios from "axios";
 export default function Header() {
   let navigate = useNavigate();
   let searchResultBox = useRef();
-  let params = useLocation();
   const [show, setShow] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [searchResult, setSearchResult] = useState("");
   const [videoSearchResult, setVideoSearchResult] = useState(null);
-  const [tokenLogin , setTokenLogin] = useState('')
+  const [tokenLogin, setTokenLogin] = useState("");
   let context = useContext(ChannelDetailsContext);
-  let clientID = "563530907251-hmcv32krv4fovjsrcqaiml4v2s8f0v2m.apps.googleusercontent.com"
+  let clientID ="150213684481-hc2e94ups8stmqq4clv99bc4vmleu0ta.apps.googleusercontent.com";
 
   const menuCollaps = () => {
     context.setCollapsed(!context.collapsed);
   };
 
   const searchingItem = async (searchItem) => {
+
     searchValue &&
       (await setSearchValue(searchItem),
       await searchHandel(),
+      context.setVideoSearchResult(searchResult),
       (searchResultBox.current.style.display = "none"),
       navigate(`/videoSearch/${searchValue}`));
   };
 
-  const searchHandel = () => {
-    axios
-      .get(`https://www.googleapis.com/youtube/v3/search`, {
-        params: {
-          key: api_key,
-          q: searchValue,
-          part: "snippet",
-          maxResults: 10, // تعداد نتایج مورد نظر را تنظیم کنید
-          type: "video",
-        },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          setSearchResult(res.data.items);
-          console.log("video search result ", res.data);
-          context.setVideoSearchResult(res.data);
-        }
-      });
-  };
+    const searchHandel = () => {
+      console.log('search handel');
+      videoSearch(searchValue)
+        .then((res) => {
+          setSearchResult(res.items);
+          // context.setVideoSearchResult(res);
+        })
+        .catch((err) =>
+          swal({
+            text: err,
+            icon: "warning",
+            dangerMode: true,
+          })
+        );
+    };
 
+  // recive my channel data
   useEffect(() => {
     let tokenL = JSON.parse(localStorage.getItem("token"));
-
-    console.log('token' , tokenL);
+    console.log("tokenL", tokenL);
 
     if (tokenL) {
-      axios
-        .get(`https://www.googleapis.com/youtube/v3/channels`, {
-          params: {
-            part: "snippet",
-            mine: true,
-            access_token:tokenL.token
-          },
-          headers: {
-            Authorization: `Bearer ${tokenL.token}`,
-          },
-        })
+      getMyChannel(tokenL.token)
         .then((res) => {
-          if (res.status === 200) {
-            context.setMyData(res.data.items);
-            context.setIsLogin(true);
-          }
-        }).catch(err=>{
-          console.log('err',err.response);
+          context.setMyData(res.items);
+          context.setIsLogin(true);
         })
+        .catch((err) =>
+          swal({
+            text: err,
+            icon: "warning",
+            dangerMode: true,
+          })
+        );
     }
   }, [context.isLogin]);
 
   useEffect(() => {
     searchResultBox.current.style.display = "block";
-    searchHandel();
+    searchValue.length > 0 && searchHandel();
   }, [searchValue]);
 
   return (
@@ -105,7 +97,7 @@ export default function Header() {
             <div className="header-left__logo">
               <Link to="/">
                 <img
-                  src="./images/logo/Youtube-Logo.svg"
+                  src="../../../public/images/logo/Youtube-Logo.svg"
                   className="header-left__logo-image"
                   alt=""
                 />
@@ -133,20 +125,27 @@ export default function Header() {
               </div>
             </div>
 
-            <div className="header-center__search-result" ref={searchResultBox}>
-              {searchResult && searchValue &&(
-              searchResult.map(searchItem=>(
 
-                <Link key={searchItem.id.videoId} className="header-center__search-result-item" 
-                  onClick={()=>searchingItem(searchItem.snippet.title.replace(/\p{Emoji}/gu, ''))}>
-                  <span><SearchIcon  className="fs-1 "/></span>
-                  {searchItem.snippet.title.replace(/\p{Emoji}/gu, '')}
-                </Link>
-              ))
-             
-            )}
-            
-            </div>
+           <div className="header-center__search-result" ref={searchResultBox}>
+              {searchResult &&
+                searchValue &&
+                searchResult.map((searchItem) => (
+                  <Link
+                    key={searchItem.id.videoId}
+                    className="header-center__search-result-item"
+                    onClick={() =>
+                      searchingItem(
+                        searchItem.snippet.title.replace(/\p{Emoji}/gu, "")
+                      )
+                    }
+                  >
+                    <span>
+                      <SearchIcon className="fs-1 " />
+                    </span>
+                    {searchItem.snippet.title.replace(/\p{Emoji}/gu, "")}
+                  </Link>
+                ))}
+            </div> 
           </div>
           <div className="header__right">
             <div className="header-right__search ">
@@ -181,14 +180,10 @@ export default function Header() {
                 />
               ) : (
                 <>
-                   <GoogleOAuthProvider 
-                     clientId="563530907251-hmcv32krv4fovjsrcqaiml4v2s8f0v2m.apps.googleusercontent.com"
-                    >
+                  <GoogleOAuthProvider clientId="150213684481-hc2e94ups8stmqq4clv99bc4vmleu0ta.apps.googleusercontent.com">
                     <Login />
-                   </GoogleOAuthProvider>
-                  
-                 
-                    </>
+                  </GoogleOAuthProvider>
+                </>
               )}
             </div>
           </div>
@@ -198,20 +193,45 @@ export default function Header() {
       {/* ________ start modal search-box_________ */}
 
       <Modal show={show} onHide={() => setShow(false)}>
-        <Modal.Body>
+        <Modal.Body className="position-relative">
           <div className="container-fluid Modal-search-box">
-            <input type="text" className="modal-input" placeholder="Search" />
-            <SearchIcon className="modal-input__search-icon" />
+            <input
+              type="text"
+              className="modal-input"
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+              placeholder="Search"
+            />
+            <SearchIcon
+              className="modal-input__search-icon"
+              onClick={() => {
+                setShow(false);
+                searchingItem(searchValue);
+              }}
+            />
+          </div>
+          <div className="search-result__modal" ref={searchResultBox}>
+            {searchResult &&
+              searchValue &&
+              searchResult.map((searchItem) => (
+                <Link
+                  key={searchItem.id.videoId}
+                  className="header-center__search-result-item"
+                  onClick={() =>
+                    searchingItem(
+                      searchItem.snippet.title.replace(/\p{Emoji}/gu, ""),
+                      setShow(false)
+                    )
+                  }
+                >
+                  <span>
+                    <SearchIcon className="fs-1 " />
+                  </span>
+                  {searchItem.snippet.title.replace(/\p{Emoji}/gu, "")}
+                </Link>
+              ))}
           </div>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={() => setShow(false)}>
-            show result
-          </Button>
-        </Modal.Footer>
       </Modal>
 
       {/* ________ Finish modal search-box_________ */}

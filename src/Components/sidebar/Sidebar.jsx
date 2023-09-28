@@ -4,6 +4,7 @@ import { ChannelDetailsContext } from "../../contexts/ChannelDetailsContext.jsx"
 import axios from "axios";
 import { Accordion } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { channelSubScribes } from "../../services/Axios/requests/Channels.jsx";
 
 import HomeIcon from "@mui/icons-material/Home";
 import ExploreIcon from "@mui/icons-material/Explore";
@@ -34,18 +35,17 @@ export default function Side() {
   const [subscribes, setSubscribes] = useState([]);
 
   useEffect(() => {
-    let token = localStorage.getItem("token");
-    context.myData.length && (axios.get(`https://www.googleapis.com/youtube/v3/subscriptions`, {
-          params: {
-            part: "snippet",
-            mine: true,
-            maxResults: 15,
-            access_token:JSON.parse(token).token,
-          },
-        })
-        .then((res) => {
-          setSubscribes(res.data.items);
-        }))
+    let token = JSON.parse(localStorage.getItem("token"));
+    context.myData.length > 0 &&
+      channelSubScribes(token.token)
+        .then((res) => setSubscribes(res.items))
+        .catch((err) =>
+          swal({
+            text: err,
+            icon: "warning",
+            dangerMode: true,
+          })
+        );
   }, [context.myData]);
 
   return (
@@ -60,18 +60,23 @@ export default function Side() {
                   : "justify-content-start"
               }`}
             >
-              <Link to="/" className={({isActive})=>isActive ? `sidebar-active py-2 w-100` :''}>
-              <span>
-                {" "}
-                <HomeIcon className="sidebar-content__icon" />
-              </span>
-              <span
-                className={`sidebar-content__list-item-text ${
-                  context.collapsed ? "inactive" : ""
-                }`}
+              <Link
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? `sidebar-active py-2 w-100` : ""
+                }
               >
-                Home
-              </span>
+                <span>
+                  {" "}
+                  <HomeIcon className="sidebar-content__icon" />
+                </span>
+                <span
+                  className={`sidebar-content__list-item-text ${
+                    context.collapsed ? "inactive" : ""
+                  }`}
+                >
+                  Home
+                </span>
               </Link>
             </div>
           </li>
@@ -120,7 +125,11 @@ export default function Side() {
           </li>
         </ul>
         <hr className="text-white fs-2 my-4" />
-        <ul className={`${subscribes.length ? 'sidebar-content__list':'inactive'}`}>
+        <ul
+          className={`${
+            subscribes.length ? "sidebar-content__list" : "inactive"
+          }`}
+        >
           <li className="sidebar-content__list-item ">
             <div
               className={` d-flex align-items-center ps-3  ${
@@ -251,7 +260,11 @@ export default function Side() {
         </ul>
 
         {/* subscribation */}
-        <ul className={`${subscribes.length ? "sidebar-content__list" : "inactive"}`}>
+        <ul
+          className={`${
+            subscribes.length ? "sidebar-content__list" : "inactive"
+          }`}
+        >
           <hr className="text-white fs-2 my-4" />
           <p className={context.collapsed ? "" : "sidebar__title"}>
             {context.collapsed ? "" : "SUBSCRIPTIONS"}
@@ -282,7 +295,11 @@ export default function Side() {
               </li>
             ))}
 
-          <Accordion className={`${subscribes.length >=5 ? "accordion w-100" : "inactive"} `}>
+          <Accordion
+            className={`${
+              subscribes.length >= 5 ? "accordion w-100" : "inactive"
+            } `}
+          >
             <Accordion.Item eventKey="0" className="accordion-items-content ">
               <Accordion.Header>{`Show ${
                 subscribes.length - 4

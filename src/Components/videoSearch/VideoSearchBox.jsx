@@ -4,6 +4,7 @@ import { convertNumber ,convertTime , videosInformation , channelInfos} from '..
 import { ChannelDetailsContext } from '../../contexts/ChannelDetailsContext.jsx'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import './videoSearchBox.css'
 
 export default function VideoSearchBox({video}) {
 
@@ -14,8 +15,6 @@ export default function VideoSearchBox({video}) {
 
 
   useEffect(()=>{
-
-    console.log('video search : ' , video);
     
     let time
     let view
@@ -32,7 +31,6 @@ export default function VideoSearchBox({video}) {
    let dataChannel = channelInfos(video.snippet.channelId)
    dataVideo.then(res=>{
     if (res.status === 200) {
-      console.log('res video' , res.data);
       setDataVideoSearch(res.data)
     }
    })
@@ -46,33 +44,33 @@ export default function VideoSearchBox({video}) {
   },[video])
   return (
     <>
-    <div className="row" style={{direction:"ltr"}}>
-    <div className="col-sm-7 col-md-6 col-lg-5 col-xl-4  ">
-      <Link to={`/video/${video.id.videoId}`}>
-        <img src={`${video.snippet.thumbnails.high.url}`} className='searchVideo__image' alt="" />
-      </Link>
-    </div>
-    <div className="col-5 mt-5" >
-      <Link to={`/channel/${video.snippet.channelId}`}>
-        <p className='text-white'>{video.snippet.title}</p>
-        <p className="d-flex align-items-center my-3">
-              <span className="video-box__infos-texts-views">{viewVideo} views </span>
-              <span className="video-box__infos-texts-timeUpload ms-3"> last {timePassed} </span>
-        </p>
-        <div>
-          {dataChannelSearch && dataVideoSearch &&(
-            <div className=''>
-              <div className='d-flex align-items-center'>
-                  <img src={`${dataChannelSearch.items[0].snippet.thumbnails.high.url}`} className='channel-image' alt="" />
-                  <p className='text-white ms-3'>{dataChannelSearch.items[0].snippet.title}</p>
-              </div>
-              <p className='text-secondary fs-5 mt-5'>{dataVideoSearch.items[0].snippet.localized.description.substring(0, 150)}</p>
-            </div>
-          )}
+     <div className="row row-cols-md-2" style={{direction:"ltr"}}>
+        <div className="col-md-4">
+          <Link to={`/video/${video.id.videoId}`}>
+            <img src={`${video.snippet.thumbnails.high.url}`} className='searchVideo__image' alt="" />
+          </Link>
         </div>
-        </Link>
-    </div>
-    </div>
+        <div className="col-md-8 mt-5 video-box__search" >
+          <Link to={`/channel/${video.snippet.channelId}`} className=''>
+            <p className='text-white'>{video.snippet.title}</p>
+            <p className="d-flex align-items-center my-3">
+                  <span className="video-box__infos-texts-views">{viewVideo} views </span>
+                  <span className="video-box__infos-texts-timeUpload ms-3"> last {timePassed} </span>
+            </p>
+            <div>
+              {dataChannelSearch && dataVideoSearch &&(
+                <div className=''>
+                  <div className='d-flex align-items-center'>
+                      <img src={`${dataChannelSearch.items[0].snippet.thumbnails.high.url}`} className='channel-image' alt="" />
+                      <p className='text-white ms-3'>{dataChannelSearch.items[0].snippet.title}</p>
+                  </div>
+                  <p className='text-secondary fs-5 mt-5'>{dataVideoSearch.items[0].snippet.localized.description.substring(0, 150)}</p>
+                </div>
+              )}
+            </div>
+            </Link>
+        </div>
+      </div>
     </>
   )
 }
