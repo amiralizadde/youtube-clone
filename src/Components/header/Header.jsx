@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import { Button, Modal } from "react-bootstrap";
-import { ChannelDetailsContext } from "../../contexts/ChannelDetailsContext.jsx";
+import { DataContext } from "../../contexts/DataContext.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "../login/Login.jsx";
 import { videoSearch } from "../../services/Axios/requests/Search.jsx";
@@ -24,7 +24,7 @@ export default function Header() {
   const [searchResult, setSearchResult] = useState("");
   const [videoSearchResult, setVideoSearchResult] = useState(null);
   const [tokenLogin, setTokenLogin] = useState("");
-  let context = useContext(ChannelDetailsContext);
+  let context = useContext(DataContext);
   
  
   const menuCollaps = () => {

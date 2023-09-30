@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./channelInformation.css";
 import { convertNumber } from "../utils/utils.jsx";
+import { Link } from "react-router-dom";
 
 export default function ChannelInformation({ dataChannel }) {
   const [subScribeCount, setSubScribeCount] = useState("");
 
   useEffect(() => {
+    console.log('dataChannel ' ,dataChannel);
     setSubScribeCount(
       convertNumber(dataChannel.items[0].statistics.subscriberCount)
     );
@@ -23,11 +25,13 @@ export default function ChannelInformation({ dataChannel }) {
 
             <div className="channel-header__topbar-infoChannel-left">
               <div className="chanchannel-header__topbar-infoChannel-profile  ">
-                <img
-                  src={`${dataChannel.items[0].snippet.thumbnails.high.url}`}
-                  className="chanchannel-header__topbar-infoChannel-profile-image img-fluid"
-                  alt=""
-                />
+               <Link to={`/channel/${dataChannel.items[0].id}`}>
+                  <img
+                    src={`${dataChannel.items[0].snippet.thumbnails.high.url}`}
+                    className="chanchannel-header__topbar-infoChannel-profile-image img-fluid"
+                    alt=""
+                  />
+                </Link>
               </div>
 
               <div className="mx-4">

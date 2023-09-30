@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
-export const ChannelDetailsContext = createContext();
+export const DataContext = createContext();
 
-const ChannelDetailsProvider = ({ children }) => {
+const DataContextProvider = ({ children }) => {
 
   const [myData , setMyData] = useState([])
   const [collapsed, setCollapsed] = useState(false);
@@ -12,7 +12,7 @@ const ChannelDetailsProvider = ({ children }) => {
   const[ token ,setToken ] = useState(null)
 
   return (
-    <ChannelDetailsContext.Provider
+    <DataContext.Provider
       value={{
         collapsed,
         setCollapsed,
@@ -27,8 +27,8 @@ const ChannelDetailsProvider = ({ children }) => {
       }}
     >
       {children}
-    </ChannelDetailsContext.Provider>
+    </DataContext.Provider>
   );
 };
 
-export default ChannelDetailsProvider;
+export default DataContextProvider;

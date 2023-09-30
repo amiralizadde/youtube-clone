@@ -5,17 +5,16 @@ import { useRoutes } from "react-router-dom";
 import routes from "./routes.jsx";
 import Header from "./Components/header/Header.jsx";
 import Sidebar from "./Components/sidebar/Sidebar.jsx";
-import { ChannelDetailsContext } from "./contexts/ChannelDetailsContext.jsx";
+import { DataContext } from "./contexts/DataContext.jsx";
 
 function App() {
   let router = useRoutes(routes);
-  let context = useContext(ChannelDetailsContext);
+  let context = useContext(DataContext);
 
   return (
     <>
       <div>
         <Header />
-        {/* <div className="container-fluid"> */}
           <div className="row home-content">
             <div
               className={`aside-content mt-5   ${
@@ -37,7 +36,6 @@ function App() {
             </div>
           </div>
         </div>
-      {/* </div> */}
     </>
   );
 }

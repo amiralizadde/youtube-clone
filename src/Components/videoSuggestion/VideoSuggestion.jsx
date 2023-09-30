@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./videoSuggestion.css";
-import { setTimeAndView  , channelInfos , videosInformation} from "../../Components/utils/utils.jsx";
+import {convertNumber , convertTime} from "../../Components/utils/utils.jsx";
+import {videosInformation} from '../../services/Axios/requests/HomeVideo.jsx'
+import {channelInformation} from '../../services/Axios/requests/Channels.jsx'
 
 export default function VideoSuggestion({ videos }) {
   const [timePassed, setTimePassed] = useState("");
@@ -13,23 +15,30 @@ export default function VideoSuggestion({ videos }) {
   useEffect(() => {
     
 
-    let channelInfo  = channelInfos(videos.snippet.channelId)
+    channelInformation(videos.snippet.channelId)
+    .then(res=> setChannelName(res.items[0].snippet.title))
+    .catch((err) =>
+        swal({
+          text: err,
+          icon: "warning",
+          dangerMode: true,
+        })
+      );
 
-    channelInfo.then(res=>{
-      if(res.status === 200 ){
-        setChannelName(res.data.items[0].snippet.title);
-      }
-    })
-
-    let videoInfo = videosInformation(videos.id.videoId)
-    videoInfo.then(res=>{
-      if (res.status === 200) {
-
-        let dateAndView = setTimeAndView(videos.snippet.publishedAt , res.data.items[0].statistics.viewCount );
-        setViewVideo(dateAndView.view)
-        setTimePassed(dateAndView.time)
-      }
-    })
+     videosInformation(videos.id.videoId)
+      .then(res=>{
+        let view = convertNumber(res.items[0].statistics.viewCount )
+        let time = convertTime(videos.snippet.publishedAt)
+        setViewVideo(view)
+        setTimePassed(time)
+       })
+       .catch((err) =>
+        swal({
+          text: err,
+          icon: "warning",
+          dangerMode: true,
+        })
+      );
 
   }, []);
 

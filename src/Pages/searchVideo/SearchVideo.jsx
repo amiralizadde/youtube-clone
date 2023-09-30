@@ -1,14 +1,13 @@
 import React,{useContext , useEffect , useState} from 'react'
-import { ChannelDetailsContext } from "../../contexts/ChannelDetailsContext.jsx";
+import { DataContext } from "../../contexts/DataContext.jsx";
 import VideoSearchBox from '../../Components/videoSearch/VideoSearchBox.jsx';
 import InfiniteScroll from 'react-infinite-scroll-component'
-import {getSuggestionVideos} from '../../Components/utils/utils.jsx'
 import {useParams} from 'react-router-dom'
 import { getVideoSuggestions } from '../../services/Axios/requests/HomeVideo.jsx';
 
 export default function SearchVideo() {
 
-  let context = useContext(ChannelDetailsContext)
+  let context = useContext(DataContext)
   let params = useParams()
   const [hasMore, setHasMore] = useState(true);
   const [newParms  , setNewParmas] = useState('')

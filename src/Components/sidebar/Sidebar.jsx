@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import "./sidebar.css";
-import { ChannelDetailsContext } from "../../contexts/ChannelDetailsContext.jsx";
+import { DataContext } from "../../contexts/DataContext.jsx";
 import axios from "axios";
 import { Accordion } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -31,7 +31,7 @@ import OnlinePredictionIcon from "@mui/icons-material/OnlinePrediction";
 import FeedIcon from "@mui/icons-material/Feed";
 
 export default function Side() {
-  let context = useContext(ChannelDetailsContext);
+  let context = useContext(DataContext);
   const [subscribes, setSubscribes] = useState([]);
 
   useEffect(() => {

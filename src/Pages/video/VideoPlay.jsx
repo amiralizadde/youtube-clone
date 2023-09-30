@@ -15,7 +15,7 @@ import { channelInformation } from "../../services/Axios/requests/Channels.jsx";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Comments from "../../Components/comments/comments";
 import ChannelInformation from "../../Components/channelInformation/ChannelInformation.jsx";
-import { ChannelDetailsContext } from "../../contexts/ChannelDetailsContext.jsx";
+import { DataContext } from "../../contexts/DataContext.jsx";
 import VideoSuggestion from "../../Components/videoSuggestion/VideoSuggestion.jsx";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
@@ -39,7 +39,7 @@ export default function VideoPlay() {
   const [hasMore, setHasMore] = useState(false);
   const [isUpdateComments, setIsUpdateComments] = useState(false);
 
-  let context = useContext(ChannelDetailsContext);
+  let context = useContext(DataContext);
 
   let params = useParams();
   let insertCommentBtn = useRef();
@@ -277,7 +277,7 @@ export default function VideoPlay() {
           <div className="row row-cols-1">
             {videoAllSuggestions.length > 0 &&
               videoAllSuggestions
-                .slice(0, 4)
+                .slice(1, 5)
                 .map((videoSuggestion) => (
                   <Video
                     key={videoSuggestion.id}

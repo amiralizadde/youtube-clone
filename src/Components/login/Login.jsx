@@ -1,9 +1,9 @@
 import React ,{useContext}from 'react'
 import {useGoogleLogin ,GoogleLogin}from '@react-oauth/google'
-import { ChannelDetailsContext } from '../../contexts/ChannelDetailsContext.jsx';
+import { DataContext } from '../../contexts/DataContext.jsx';
 
 export default function Login() {
-    let context = useContext(ChannelDetailsContext);
+    let context = useContext(DataContext);
 
     const  signIn = useGoogleLogin({
         scope: 'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.force-ssl',

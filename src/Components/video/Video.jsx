@@ -1,6 +1,6 @@
 import React , {useEffect , useState} from 'react'
 import './Video.css'
-import {channelInfos ,convertTime , convertNumber} from '../utils/utils.jsx'
+import {convertTime , convertNumber} from '../utils/utils.jsx'
 import { useNavigate } from 'react-router-dom';
 import  moment  from 'moment';
 import { channelInformation } from '../../services/Axios/requests/Channels.jsx';

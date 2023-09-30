@@ -1,10 +1,12 @@
 import React, { useEffect, useState ,useContext} from 'react'
 import './videoSearchBox.css'
-import { convertNumber ,convertTime , videosInformation , channelInfos} from '../utils/utils.jsx'
-import { ChannelDetailsContext } from '../../contexts/ChannelDetailsContext.jsx'
+import { convertNumber ,convertTime} from '../utils/utils.jsx'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import './videoSearchBox.css'
+import swal from 'sweetalert'
+import {videosInformation} from '../../services/Axios/requests/HomeVideo.jsx'
+import {channelInformation} from '../../services/Axios/requests/Channels.jsx'
 
 export default function VideoSearchBox({video}) {
 
@@ -27,20 +29,25 @@ export default function VideoSearchBox({video}) {
   },[dataVideoSearch])
 
   useEffect(()=>{
-   let dataVideo = videosInformation(video.id.videoId)
-   let dataChannel = channelInfos(video.snippet.channelId)
-   dataVideo.then(res=>{
-    if (res.status === 200) {
-      setDataVideoSearch(res.data)
-    }
-   })
+   videosInformation(video.id.videoId)
+   .then(res=> setDataVideoSearch(res))
+   .catch((err) =>
+        swal({
+          text: err,
+          icon: "warning",
+          dangerMode: true,
+        })
+      );
 
-   dataChannel.then(res=>{
-    if (res.status === 200) {
-      // console.log('res channel ' , res.data);
-      setDataChannelSearch(res.data)
-    }
-   })
+      channelInformation(video.snippet.channelId)
+   .then(res=> setDataChannelSearch(res))
+   .catch((err) =>
+        swal({
+          text: err,
+          icon: "warning",
+          dangerMode: true,
+        })
+      );
   },[video])
   return (
     <>

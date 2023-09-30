@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import "./index.css";
 import {channelVideos} from '../../../services/Axios/requests/Channels.jsx'
 import {videosInformation}from '../../../services/Axios/requests/HomeVideo.jsx'
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Video from "../../../Components/video/Video.jsx";
 
 export default function Index() {
@@ -49,9 +49,7 @@ export default function Index() {
           <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
             {videosChannel &&
               videosChannel.map((video) => (
-                    <>
                       <Video key={video.id} video={video} page="channel"/>
-                    </>
                   )
               )}
           </div>
