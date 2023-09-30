@@ -4,6 +4,7 @@ import {  convertNumber } from "../../Components/utils/utils.jsx";
 import { useParams } from "react-router-dom";
 import Index from "./index/Index.jsx";
 import { channelInformation } from "../../services/Axios/requests/Channels.jsx";
+import BeatLoader from "react-spinners/BeatLoader";
 
 export default function Channel() {
   let params = useParams();
@@ -69,7 +70,7 @@ export default function Channel() {
           </section>
         </div>
       ) : (
-        <div>pleade waiting.......</div>
+        <div><BeatLoader color="white" /></div>
       )}
     </>
   );

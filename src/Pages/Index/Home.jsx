@@ -4,6 +4,7 @@ import Video from "../../Components/video/Video.jsx";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getVideos } from "../../services/Axios/requests/HomeVideo.jsx";
 import swal from "sweetalert";
+import BeatLoader from "react-spinners/BeatLoader";
 
 
 
@@ -57,7 +58,7 @@ export default function Index() {
           </InfiniteScroll>
         </div>
       ) : (
-        <p className="bg-light ">please Wait...</p>
+        <p className=""><BeatLoader color="white" /></p>
       )}
     </div>
   );

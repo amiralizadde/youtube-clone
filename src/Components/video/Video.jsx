@@ -4,6 +4,7 @@ import {channelInfos ,convertTime , convertNumber} from '../utils/utils.jsx'
 import { useNavigate } from 'react-router-dom';
 import  moment  from 'moment';
 import { channelInformation } from '../../services/Axios/requests/Channels.jsx';
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Video({video , page}) {
     let navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function Video({video , page}) {
         </div>
     </div>
     ):(
-        <p className="text-white">please waiting ...</p>
+        <p className="text-white"><ClipLoader  color="#FFFFFF "/></p>
     )
   )
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const api_key = "AIzaSyD7VKxmqWmebKoPxX0StF0_DrWo8WFdaUA";
+export const api_key = "AIzaSyBGEC_jendiZ32psap-l7lSpDlt6h5n1OM";
 
 const channelInfos = (channelID) => {
   const res = axios.get("https://www.googleapis.com/youtube/v3/channels", {

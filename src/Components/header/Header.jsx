@@ -25,8 +25,8 @@ export default function Header() {
   const [videoSearchResult, setVideoSearchResult] = useState(null);
   const [tokenLogin, setTokenLogin] = useState("");
   let context = useContext(ChannelDetailsContext);
-  let clientID ="150213684481-hc2e94ups8stmqq4clv99bc4vmleu0ta.apps.googleusercontent.com";
-
+  
+ 
   const menuCollaps = () => {
     context.setCollapsed(!context.collapsed);
   };
