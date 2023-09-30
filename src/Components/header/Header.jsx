@@ -97,7 +97,7 @@ export default function Header() {
             <div className="header-left__logo">
               <Link to="/">
                 <img
-                  src="../../../public/images/logo/Youtube-Logo.svg"
+                  src="./images/logo/Youtube-Logo.svg"
                   className="header-left__logo-image"
                   alt=""
                 />
@@ -157,7 +157,7 @@ export default function Header() {
 
             <div className="header-right__create ">
               <img
-                src="../../../public/images/create.svg"
+                src="./images/create.svg"
                 alt=""
                 className="header-right__create-img"
               />

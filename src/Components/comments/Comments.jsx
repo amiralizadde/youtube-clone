@@ -19,7 +19,6 @@ export default function Comments({comment}) {
 
   return (
     <>
-        <>
         <div className="container d-flex mt-4  py-4" id="comment">
              <div className="comment__content-image mx-3">
                 <img src={comment.snippet.topLevelComment.snippet.authorProfileImageUrl} alt="" className="comment__image" />
@@ -30,7 +29,6 @@ export default function Comments({comment}) {
                 <p className='video-information'><span className='mx-3 fs-5'>{comment.snippet.topLevelComment.snippet.likeCount === 0 ? '' : comment.snippet.topLevelComment.snippet.likeCount}<ThumbUpIcon className='mx-1'/></span><span><ThumbDownAltIcon /></span></p>
              </div>
         </div>
-        </>
     </>
   )
 }

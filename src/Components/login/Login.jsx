@@ -22,7 +22,7 @@ export default function Login() {
     
      <button onClick={signIn} className='btn'>
           <img
-                  src="../../../public/images/logo/download.png"
+                  src="./images/logo/download.png"
                   alt=""
                   className="header-right__profile-img"
            />

@@ -13,7 +13,7 @@ import {
 } from "../../services/Axios/requests/HomeVideo.jsx";
 import { channelInformation } from "../../services/Axios/requests/Channels.jsx";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Comments from "../../Components/comments/comments";
+import Comments from "../../Components/comments/Comments.jsx";
 import ChannelInformation from "../../Components/channelInformation/ChannelInformation.jsx";
 import { DataContext } from "../../contexts/DataContext.jsx";
 import VideoSuggestion from "../../Components/videoSuggestion/VideoSuggestion.jsx";
